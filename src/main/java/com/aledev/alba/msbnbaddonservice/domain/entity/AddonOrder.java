@@ -12,8 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -35,9 +33,8 @@ public class AddonOrder {
     @NotNull
     private Short qty;
 
-    @OneToMany(targetEntity = Addon.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "addonId", referencedColumnName = "id")
-    private List<Addon> addons = new ArrayList<>();
+    @OneToOne(targetEntity = Addon.class)
+    private Addon addon;
 
     @NotNull
     @Positive
