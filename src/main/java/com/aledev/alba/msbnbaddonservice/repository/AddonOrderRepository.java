@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface AddonOrderRepository extends JpaRepository<Long, AddonOrder> {
+public interface AddonOrderRepository extends JpaRepository<AddonOrder, Long> {
     List<AddonOrder> findAllByBookingUid(UUID uuid);
 }
