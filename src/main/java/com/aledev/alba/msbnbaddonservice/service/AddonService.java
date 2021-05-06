@@ -11,8 +11,6 @@ public interface AddonService {
 
     Extra getAddonsForBookingUuid(UUID bookingUUID);
 
-    List<AddonOrderDto> getAddonsByCategory(Long id);
-
     List<AddonOrderDto> saveAllAddons(List<AddonOrderDto> addons);
 
     AddonOrderDto createNewOrder(AddonOrderDto dto);

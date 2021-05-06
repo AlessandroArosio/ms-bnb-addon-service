@@ -45,27 +45,35 @@ public class AddonServiceImpl implements AddonService {
     }
 
     @Override
-    public List<AddonOrderDto> getAddonsByCategory(Long id) {
-        return null;
-    }
-
-    @Override
     public List<AddonOrderDto> saveAllAddons(List<AddonOrderDto> addons) {
-        return null;
+        var addonOrders = repository.saveAll(addons.stream()
+                .map(mapper::dtoToEntity)
+                .collect(Collectors.toList()));
+        return addonOrders.stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override
     public AddonOrderDto createNewOrder(AddonOrderDto dto) {
-        return null;
+        var addonOrder = repository.save(mapper.dtoToEntity(dto));
+        return mapper.entityToDto(addonOrder);
     }
 
     @Override
     public AddonOrderDto updateOrder(Long id, AddonOrderDto dto) {
-        return null;
+        var addonOrder = repository.findById(id).orElseThrow(() -> new AddonOrderException("Addon no found with ID: " + id));
+        addonOrder.setAddon(dto.getAddon());
+        addonOrder.setPaid(dto.getPaid());
+        addonOrder.setQty(dto.getQty());
+        addonOrder.setTotalPrice(dto.getTotalPrice());
+
+        var orderUpdated = repository.save(addonOrder);
+
+        return mapper.entityToDto(orderUpdated);
     }
 
     @Override
     public void deleteAddon(Long id) {
-
+        repository.findById(id)
+                .ifPresent(repository::delete);
     }
 }
