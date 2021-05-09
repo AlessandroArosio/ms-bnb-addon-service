@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 @ValidCategory
 public class AddonDto {
 
+    private Long id;
+
     @NotNull
     private AddonCategory category;
 

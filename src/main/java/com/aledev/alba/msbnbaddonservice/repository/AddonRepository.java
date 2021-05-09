@@ -1,7 +1,13 @@
 package com.aledev.alba.msbnbaddonservice.repository;
 
 import com.aledev.alba.msbnbaddonservice.domain.entity.Addon;
-import org.springframework.data.repository.CrudRepository;
+import com.aledev.alba.msbnbaddonservice.domain.enums.AddonCategory;
+import com.aledev.alba.msbnbaddonservice.domain.enums.AddonType;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AddonRepository extends CrudRepository<Addon, Long> {
+import java.util.List;
+
+public interface AddonRepository extends JpaRepository<Addon, Long> {
+    List<Addon> findAllByCategory(AddonCategory category);
+    List<Addon> findAllByType(AddonType type);
 }
