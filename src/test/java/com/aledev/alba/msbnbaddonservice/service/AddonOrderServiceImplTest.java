@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-class AddonServiceImplTest {
+class AddonOrderServiceImplTest {
     @Mock
     AddonMapper addonMapper;
 
@@ -41,7 +41,7 @@ class AddonServiceImplTest {
     AddonOrderRepository orderRepository;
 
     @InjectMocks
-    AddonServiceImpl addonService;
+    AddonOrderServiceImpl addonService;
 
     AddonOrderDto orderDto;
 
@@ -147,21 +147,58 @@ class AddonServiceImplTest {
 
     @Test
     void testSaveAllAddons() {
+        List<AddonOrderDto> orderList = List.of(this.orderDto, orderDto);
+
+        when(orderRepository.saveAll(anyList())).thenReturn(List.of(order, order));
+
+        List<AddonOrderDto> savedOrders = addonService.saveAllAddonOrders(orderList);
+
+        verify(orderRepository, times(1)).saveAll(anyList());
+        assertThat(savedOrders).hasSize(2);
     }
 
     @Test
     void testCreateNewOrder() {
+        when(orderRepository.save(any(AddonOrder.class))).thenReturn(order);
+
+        addonService.createNewOrder(orderDto);
+
+        verify(orderRepository, times(1)).save(any());
     }
 
     @Test
     void testUpdateOrder() {
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(AddonOrder.class))).thenReturn(order);
+
+        addonService.updateOrder(1L, orderDto);
+
+        verify(orderRepository, times(1)).save(any());
+    }
+
+    @Test
+    void testUpdateOrder_NotFound_ThrowsException() {
+        assertThrows(AddonOrderException.class, () -> addonService.updateOrder(1L, orderDto));
     }
 
     @Test
     void testUpdateOrderNotFound_ThrowsException() {
+        assertThrows(AddonOrderException.class, () -> addonService.updateOrder(3L, orderDto));
     }
 
     @Test
     void testDeleteAddon_DeleteAddonWhenFound() {
+        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
+
+        addonService.deleteOrder(1L);
+
+        verify(orderRepository, times(1)).delete(any());
+    }
+
+    @Test
+    void testDeleteAddon_DoesNotDeleteAddonWhenNotFound() {
+        addonService.deleteOrder(1L);
+
+        verify(orderRepository, never() ).delete(any());
     }
 }

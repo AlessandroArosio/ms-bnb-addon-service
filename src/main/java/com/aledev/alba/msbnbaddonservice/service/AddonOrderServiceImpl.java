@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AddonServiceImpl implements AddonService {
+public class AddonOrderServiceImpl implements AddonOrderService {
     private final AddonOrderRepository orderRepository;
     private final AddonOrderMapper orderMapper;
     private final AddonMapper addonMapper;

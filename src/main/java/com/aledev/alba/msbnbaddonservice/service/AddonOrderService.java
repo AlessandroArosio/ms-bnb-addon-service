@@ -6,7 +6,7 @@ import com.aledev.alba.msbnbaddonservice.web.model.Extra;
 import java.util.List;
 import java.util.UUID;
 
-public interface AddonService {
+public interface AddonOrderService {
     AddonOrderDto getAddonOrder(Long id);
 
     Extra getAddonOrdersForBookingUuid(UUID bookingUUID);
