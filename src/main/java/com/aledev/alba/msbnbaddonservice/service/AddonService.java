@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AddonService {
-    AddonOrderDto getAddon(Long id);
+    AddonOrderDto getAddonOrder(Long id);
 
-    Extra getAddonsForBookingUuid(UUID bookingUUID);
+    Extra getAddonOrdersForBookingUuid(UUID bookingUUID);
 
-    List<AddonOrderDto> saveAllAddons(List<AddonOrderDto> addons);
+    List<AddonOrderDto> saveAllAddonOrders(List<AddonOrderDto> addons);
 
     AddonOrderDto createNewOrder(AddonOrderDto dto);
 
     AddonOrderDto updateOrder(Long id, AddonOrderDto dto);
 
-    void deleteAddon(Long id);
+    void deleteOrder(Long id);
 }

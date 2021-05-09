@@ -4,18 +4,12 @@ import com.aledev.alba.msbnbaddonservice.web.model.AddonDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Objects;
 
 public class CategoryValidator implements ConstraintValidator<ValidCategory, AddonDto> {
 
     @Override
-    public void initialize(ValidCategory annotation) {
-    }
-
-    @Override
     public boolean isValid(AddonDto dto, ConstraintValidatorContext context) {
-        if (dto.getCategory().equals(dto.getType().getCategory())) {
-            return true;
-        }
-        return false;
+        return Objects.equals(dto.getCategory(), dto.getType().getCategory());
     }
 }
