@@ -1,6 +1,5 @@
 package com.aledev.alba.msbnbaddonservice.web.model;
 
-import com.aledev.alba.msbnbaddonservice.domain.entity.Addon;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +31,7 @@ public class AddonOrderDto {
     private Short qty;
 
     @NotNull
-    private Addon addon;
+    private AddonDto addon;
 
     @NotNull
     @Positive

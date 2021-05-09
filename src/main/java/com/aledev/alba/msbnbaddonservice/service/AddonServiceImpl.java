@@ -1,6 +1,7 @@
 package com.aledev.alba.msbnbaddonservice.service;
 
 import com.aledev.alba.msbnbaddonservice.repository.AddonOrderRepository;
+import com.aledev.alba.msbnbaddonservice.web.mappers.AddonMapper;
 import com.aledev.alba.msbnbaddonservice.web.mappers.AddonOrderMapper;
 import com.aledev.alba.msbnbaddonservice.web.model.AddonOrderDto;
 import com.aledev.alba.msbnbaddonservice.web.model.BookingAddon;
@@ -18,12 +19,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddonServiceImpl implements AddonService {
     private final AddonOrderRepository repository;
-    private final AddonOrderMapper mapper;
+    private final AddonOrderMapper orderMapper;
+    private final AddonMapper addonMapper;
 
     @Override
     public AddonOrderDto getAddon(Long id) {
-        var addonOrder = repository.findById(id).orElseThrow(() -> new AddonOrderException("Order not found with ID: " + id));
-        return mapper.entityToDto(addonOrder);
+        var addonOrder = repository.findById(id)
+                .orElseThrow(() -> new AddonOrderException("Order not found with ID: " + id));
+        return orderMapper.entityToDto(addonOrder);
     }
 
     @Override
@@ -47,28 +50,29 @@ public class AddonServiceImpl implements AddonService {
     @Override
     public List<AddonOrderDto> saveAllAddons(List<AddonOrderDto> addons) {
         var addonOrders = repository.saveAll(addons.stream()
-                .map(mapper::dtoToEntity)
+                .map(orderMapper::dtoToEntity)
                 .collect(Collectors.toList()));
-        return addonOrders.stream().map(mapper::entityToDto).collect(Collectors.toList());
+        return addonOrders.stream().map(orderMapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override
     public AddonOrderDto createNewOrder(AddonOrderDto dto) {
-        var addonOrder = repository.save(mapper.dtoToEntity(dto));
-        return mapper.entityToDto(addonOrder);
+        var addonOrder = repository.save(orderMapper.dtoToEntity(dto));
+        return orderMapper.entityToDto(addonOrder);
     }
 
     @Override
     public AddonOrderDto updateOrder(Long id, AddonOrderDto dto) {
-        var addonOrder = repository.findById(id).orElseThrow(() -> new AddonOrderException("Addon no found with ID: " + id));
-        addonOrder.setAddon(dto.getAddon());
+        var addonOrder = repository.findById(id)
+                .orElseThrow(() -> new AddonOrderException("Addon no found with ID: " + id));
+        addonOrder.setAddon(addonMapper.dtoToEntity(dto.getAddon()));
         addonOrder.setPaid(dto.getPaid());
         addonOrder.setQty(dto.getQty());
         addonOrder.setTotalPrice(dto.getTotalPrice());
 
         var orderUpdated = repository.save(addonOrder);
 
-        return mapper.entityToDto(orderUpdated);
+        return orderMapper.entityToDto(orderUpdated);
     }
 
     @Override

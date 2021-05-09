@@ -25,4 +25,8 @@ public enum AddonType {
                 .filter(type -> type.category.equals(category))
                 .collect(Collectors.toList());
     }
+
+    public AddonCategory getCategory() {
+        return this.category;
+    }
 }
