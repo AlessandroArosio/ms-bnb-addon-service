@@ -54,9 +54,14 @@ public class AddonServiceImpl implements AddonService {
 
     @Override
     public AddonDto updateAddon(AddonDto addonDto) {
-        var addonToUpdate = mapper.dtoToEntity(addonDto);
-        var updatedAddon = addonRepository.findById(addonToUpdate.getId())
+        var addonToUpdate = addonRepository.findById(addonDto.getId())
                 .orElseThrow(RuntimeException::new);
+        addonToUpdate.setCategory(addonDto.getCategory());
+        addonToUpdate.setPricePerUnit(addonDto.getPricePerUnit());
+        addonToUpdate.setType(addonDto.getType());
+
+        var updatedAddon = addonRepository.save(addonToUpdate);
+
         return mapper.entityToDto(updatedAddon);
     }
 
