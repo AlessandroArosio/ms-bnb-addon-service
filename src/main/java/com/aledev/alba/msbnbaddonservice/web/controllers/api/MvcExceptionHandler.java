@@ -13,12 +13,14 @@ public class MvcExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> validationErrorHandler(RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AddonOrderException.class)
     public ResponseEntity<String> validationErrorHandler(AddonOrderException ex) {
-        HttpHeaders headers = new HttpHeaders();
+        var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.BAD_REQUEST);
     }
