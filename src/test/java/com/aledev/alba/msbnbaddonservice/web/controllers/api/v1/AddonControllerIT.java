@@ -42,7 +42,7 @@ class AddonControllerIT {
     @Autowired
     ObjectMapper objectMapper;
 
-    final static String API_ROOT = "/api/v1/addon";
+    private final static String API_ROOT = "/api/v1/addon";
 
     @BeforeAll
     static void beforeAll(@Autowired AddonRepository repository) {
