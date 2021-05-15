@@ -10,6 +10,7 @@ import com.aledev.alba.msbnbaddonservice.web.model.exception.AddonOrderException
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -50,19 +51,27 @@ public class AddonOrderServiceImpl implements AddonOrderService {
     @Override
     public List<AddonOrderDto> saveAllAddonOrders(List<AddonOrderDto> addons) {
         var addonOrders = orderRepository.saveAll(addons.stream()
-                .map(orderMapper::dtoToEntity)
+                .map(dto -> {
+                    calculateTotalPrice(dto);
+                    return orderMapper.dtoToEntity(dto);
+                })
                 .collect(Collectors.toList()));
-        return addonOrders.stream().map(orderMapper::entityToDto).collect(Collectors.toList());
+
+        return addonOrders.stream()
+                .map(orderMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public AddonOrderDto createNewOrder(AddonOrderDto dto) {
+        calculateTotalPrice(dto);
         var addonOrder = orderRepository.save(orderMapper.dtoToEntity(dto));
         return orderMapper.entityToDto(addonOrder);
     }
 
     @Override
     public AddonOrderDto updateOrder(Long id, AddonOrderDto dto) {
+        calculateTotalPrice(dto);
         var addonOrder = orderRepository.findById(id)
                 .orElseThrow(() -> new AddonOrderException("Addon no found with ID: " + id));
         addonOrder.setAddon(addonMapper.dtoToEntity(dto.getAddon()));
@@ -79,5 +88,10 @@ public class AddonOrderServiceImpl implements AddonOrderService {
     public void deleteOrder(Long id) {
         orderRepository.findById(id)
                 .ifPresent(orderRepository::delete);
+    }
+
+    private void calculateTotalPrice(AddonOrderDto dto) {
+        BigDecimal total = dto.getAddon().getPricePerUnit().multiply(new BigDecimal((dto.getQty())));
+        dto.setTotalPrice(total);
     }
 }

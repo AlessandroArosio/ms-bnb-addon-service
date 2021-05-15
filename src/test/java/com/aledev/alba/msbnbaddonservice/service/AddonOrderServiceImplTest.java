@@ -6,7 +6,7 @@ import com.aledev.alba.msbnbaddonservice.domain.enums.AddonCategory;
 import com.aledev.alba.msbnbaddonservice.domain.enums.AddonType;
 import com.aledev.alba.msbnbaddonservice.repository.AddonOrderRepository;
 import com.aledev.alba.msbnbaddonservice.web.mappers.AddonMapper;
-import com.aledev.alba.msbnbaddonservice.web.mappers.AddonOrderMapper;
+import com.aledev.alba.msbnbaddonservice.web.mappers.AddonOrderMapperImpl;
 import com.aledev.alba.msbnbaddonservice.web.model.AddonDto;
 import com.aledev.alba.msbnbaddonservice.web.model.AddonOrderDto;
 import com.aledev.alba.msbnbaddonservice.web.model.Extra;
@@ -14,8 +14,7 @@ import com.aledev.alba.msbnbaddonservice.web.model.exception.AddonOrderException
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
@@ -35,10 +34,13 @@ class AddonOrderServiceImplTest {
     AddonMapper addonMapper;
 
     @Mock
-    AddonOrderMapper orderMapper;
+    AddonOrderMapperImpl orderMapper;
 
     @Mock
     AddonOrderRepository orderRepository;
+
+    @Captor
+    ArgumentCaptor<AddonOrder> captor;
 
     @InjectMocks
     AddonOrderServiceImpl addonService;
@@ -159,11 +161,21 @@ class AddonOrderServiceImplTest {
 
     @Test
     void testCreateNewOrder() {
+        orderDto.getAddon().setPricePerUnit(new BigDecimal("1.20"));
+        orderDto.setQty((short)5);
+
+        var expected = new BigDecimal("1.20").multiply(new BigDecimal(5));
+
         when(orderRepository.save(any(AddonOrder.class))).thenReturn(order);
+        when(orderMapper.dtoToEntity(orderDto)).thenCallRealMethod();
 
         addonService.createNewOrder(orderDto);
 
-        verify(orderRepository, times(1)).save(any());
+        verify(orderRepository, times(1)).save(captor.capture());
+
+        var capturedOrder = captor.getValue();
+
+        assertThat(capturedOrder.getTotalPrice()).isEqualTo(expected);
     }
 
     @Test
