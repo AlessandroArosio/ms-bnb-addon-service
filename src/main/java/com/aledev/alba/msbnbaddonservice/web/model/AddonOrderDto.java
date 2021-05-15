@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -18,10 +17,8 @@ import java.util.UUID;
 @Builder
 public class AddonOrderDto {
 
-    @Null
     private Long id;
 
-    @Null
     private UUID uuid;
 
     @NotNull
@@ -33,7 +30,6 @@ public class AddonOrderDto {
     @NotNull
     private AddonDto addon;
 
-    @NotNull
     @Positive
     private BigDecimal totalPrice;
 

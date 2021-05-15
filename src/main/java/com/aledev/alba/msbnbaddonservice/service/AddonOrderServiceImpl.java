@@ -52,6 +52,7 @@ public class AddonOrderServiceImpl implements AddonOrderService {
     public List<AddonOrderDto> saveAllAddonOrders(List<AddonOrderDto> addons) {
         var addonOrders = orderRepository.saveAll(addons.stream()
                 .map(dto -> {
+                    dto.setUuid(UUID.randomUUID());
                     calculateTotalPrice(dto);
                     return orderMapper.dtoToEntity(dto);
                 })
@@ -65,6 +66,7 @@ public class AddonOrderServiceImpl implements AddonOrderService {
     @Override
     public AddonOrderDto createNewOrder(AddonOrderDto dto) {
         calculateTotalPrice(dto);
+        dto.setUuid(UUID.randomUUID());
         var addonOrder = orderRepository.save(orderMapper.dtoToEntity(dto));
         return orderMapper.entityToDto(addonOrder);
     }
