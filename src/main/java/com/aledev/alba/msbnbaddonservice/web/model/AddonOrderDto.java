@@ -36,6 +36,8 @@ public class AddonOrderDto {
     @NotNull
     private Boolean paid;
 
+    private String notes;
+
     private Timestamp orderDate;
 
     private Timestamp lastModifiedDate;

@@ -25,6 +25,7 @@ public class AddonOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private UUID uuid;
 
     @NotNull
@@ -42,6 +43,8 @@ public class AddonOrder {
 
     @NotNull
     private Boolean paid;
+
+    private String notes;
 
     @CreationTimestamp
     @Column(updatable = false)
