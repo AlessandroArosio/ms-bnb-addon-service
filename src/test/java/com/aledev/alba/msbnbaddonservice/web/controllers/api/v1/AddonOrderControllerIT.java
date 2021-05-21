@@ -178,7 +178,7 @@ class AddonOrderControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(content()
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.addon.pricePerUnit", equalTo(1.2)));
+                .andExpect(jsonPath("$.addon.pricePerUnit", equalTo(1.5)));
     }
 
     @Order(5)

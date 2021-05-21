@@ -28,7 +28,7 @@ public class Bootstrap implements CommandLineRunner {
     }
 
     private void populateAddons() {
-        List<AddonDto> addonDtos = addonService.saveAll(List.of(
+        addonService.saveAll(List.of(
                 AddonDto.builder()
                         .category(AddonCategory.BREAKFAST)
                         .type(AddonType.YOGURT)

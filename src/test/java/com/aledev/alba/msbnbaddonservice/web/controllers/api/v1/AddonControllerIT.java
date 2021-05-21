@@ -76,9 +76,9 @@ class AddonControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].type", equalTo(AddonType.TOAST.name())))
-                .andExpect(jsonPath("$[1].type", equalTo(AddonType.PAIN_AU_CHOCOLATE.name())));
+                .andExpect(jsonPath("$", hasSize(7)))
+                .andExpect(jsonPath("$[0].type", equalTo(AddonType.YOGURT.name())))
+                .andExpect(jsonPath("$[1].type", equalTo(AddonType.ORANGE_JUICE.name())));
     }
 
     @Order(2)
@@ -93,7 +93,7 @@ class AddonControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].type", equalTo(AddonType.PICK_UP.name())));
     }
 
@@ -104,7 +104,7 @@ class AddonControllerIT {
                 get(API_ROOT + "/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.type", equalTo("TOAST")));
+                .andExpect(jsonPath("$.type", equalTo("YOGURT")));
     }
 
     @Order(4)
