@@ -1,5 +1,6 @@
 package com.aledev.alba.msbnbaddonservice.web.controllers.api.v1;
 
+import com.aledev.alba.msbnbaddonservice.bootstrap.Bootstrap;
 import com.aledev.alba.msbnbaddonservice.domain.entity.Addon;
 import com.aledev.alba.msbnbaddonservice.domain.entity.AddonOrder;
 import com.aledev.alba.msbnbaddonservice.domain.enums.AddonCategory;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,6 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AddonOrderControllerIT {
+
+    @MockBean
+    Bootstrap bootstrap;
 
     @Autowired
     MockMvc mvc;
@@ -178,7 +183,7 @@ class AddonOrderControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(content()
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.addon.pricePerUnit", equalTo(1.5)));
+                .andExpect(jsonPath("$.addon.pricePerUnit", equalTo(1.2)));
     }
 
     @Order(5)
